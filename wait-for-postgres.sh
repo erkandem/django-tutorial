@@ -7,7 +7,10 @@ host="$1"
 shift
 cmd="$@"
 
-until PGPASSWORD=$POSTGRES_PASSWORD psql -h "$host" -U "postgres" -c '\q'; do
+echo sleeping ten seconds
+sleep 10
+
+until PGPASSWORD=$POSTGRES_INITIAL_PASSWORD psql -h "$host" -U postgres -c '\q'; do
   >&2 echo "Postgres is unavailable - sleeping"
   sleep 2
 done
