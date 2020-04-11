@@ -5,7 +5,13 @@ using an .env file which contains database credentials.
 import os
 import time
 import psycopg2
-import psycopg2.extras
+import dotenv
+
+dotenv.load_dotenv(
+    dotenv.find_dotenv(
+        raise_error_if_not_found=True
+    )
+)
 
 
 class PostgresConfig:
@@ -18,32 +24,40 @@ class PostgresConfig:
         self.db = 'postgresql'
 
     def get_uri(self, db_name):
-        return f"{self.db}+{self.driver}://{self.user}:{self.pw}@{self.host}:{self.port}/{db_name}"
-
-    def get_uri_simple(self, db_name):
         return f"{self.db}://{self.user}:{self.pw}@{self.host}:{self.port}/{db_name}"
 
 
 class DbTester:
     def __init__(self):
+        self.succeeded = False
+        self.attempts = 5
+        self.sleep_time = 5
         self.pgc = PostgresConfig()
 
     def get_print_and_dispose(self, db_name):
         with psycopg2.connect(self.pgc.get_uri_simple(db_name)) as con:
-            cursor = con.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-            query = 'SELECT 1 as result;'
+            cursor = con.cursor()
+            query = 'SELECT 1;'
             cursor.execute(query)
             data = cursor.fetchall()
-        for row in data:
-            print(f'{db_name}: {query} {row["result"]}')
-        con.close()
+            for row in data:
+                print(f'{db_name}: {query} {row[0]}')
+
+    def test_loop(self):
+        while not self.succeeded and self.attempts > 0:
+            try:
+                self.get_print_and_dispose('postgres')
+                self.succeeded = True
+            except psycopg2.OperationalError:
+                print('connection failed')
+                print(f'sleeping {self.sleep_time} seconds')
+                time.sleep(self.sleep_time)
+            self.attempts = self.attempts - 1
 
 
 def main():
-    print('waiting 6 seconds')
-    time.sleep(6)
     dbt = DbTester()
-    dbt.get_print_and_dispose('postgres')
+    dbt.test_loop()
 
 
 if __name__ == '__main__':
