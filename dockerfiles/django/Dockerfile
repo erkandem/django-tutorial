@@ -8,7 +8,7 @@ WORKDIR $working_directory
 ADD . $working_directory
 RUN chmod +x wait-for-postgres.sh
 RUN pip install -r requirements.txt
-ADD .env  $working_directory
+ADD .env.docker  $working_directory/.env
 #CMD ["ls", "-la"]
 #CMD ["pwd"]
 CMD ["./wait-for-postgres.sh","db","python","manage.py","runserver","0.0.0.0:8000"]
