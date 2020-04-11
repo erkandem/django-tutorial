@@ -1,6 +1,7 @@
 #!/bin/sh
 # wait-for-postgres.sh
-
+# copied from https://docs.docker.com/compose/startup-order/
+# also https://stackoverflow.com/questions/42307008/django-cant-connect-to-postgres-in-docker-setup
 set -e
 
 host="$1"
