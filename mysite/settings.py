@@ -44,8 +44,6 @@ DATABASES = {
     }
 }
 
-for key, value in DATABASES['default'].items():
-    print(f'{key}: {value}')
 
 # Application definition
 
