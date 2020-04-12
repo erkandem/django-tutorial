@@ -1,7 +1,35 @@
 create a new django project
 
 ```bash
-$ django-admin startproject mysite
+$ django-admin startproject <project_name>
+```
+
+create a new django app
+
+```bash
+$ django-admin startapp <app_name>
+```
+
+apply all database operations on a new database
+
+```bash
+$ python manage.py migrate
+```
+
+after adding or changing an existing model the database need to be adjusted
+for potential schema changes, data type changes etc.
+
+stored within the `migrations` package in the individual app
+
+```bash
+$ python manage.py makemigrations <app_name>
+```
+
+
+the raw SQL version may be checked out with the `sqlmigrate` command
+
+```bash
+$ python manage.py sqlmigrate my_app 0001 > sql.sql
 ```
 
 ___
