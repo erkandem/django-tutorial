@@ -8,6 +8,7 @@ ALTER ROLE django_app SET client_encoding TO 'utf8';
 ALTER ROLE django_app SET default_transaction_isolation TO 'read committed';
 ALTER ROLE django_app SET timezone TO 'UTC';
 ALTER ROLE django_app WITH LOGIN;
+ALTER ROLE django_app WITH SUPERUSER;
 
 -- grant rights to read, write, ... and so on
 GRANT ALL PRIVILEGES ON DATABASE django_app TO django_app;
