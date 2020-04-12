@@ -5,24 +5,27 @@ from django.shortcuts import  get_object_or_404
 from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
+from django.views import generic
 from .models import Question
 from .models import Choice
 
 
-def index(request):
+class IndexView(generic.ListView):
     """shows the first five questions by default"""
-    latest_question_list = Question.objects.order_by('-pub_date')[:5]
-    context = {'latest_question_list': latest_question_list}
-    return render(request, 'my_app/index.html', context)
+    template_name = 'my_app/index.html'
+    context_object_name = 'latest_question_list'
 
-def detail(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'my_app/detail.html', {'question': question})
+    def get_queryset(self):
+        return Question.objects.order_by('-pub_date')[:5]
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'my_app/detail.html'
 
 
-def results(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'my_app/results.html', {'question': question})
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'my_app/results.html'
 
 
 def vote(request, question_id):
