@@ -16,6 +16,11 @@ apply all database operations on a new database
 $ python manage.py migrate
 ```
 
+start the django dev server
+```bash
+$ python manage.py runserver
+```
+
 after adding or changing an existing model the database need to be adjusted
 for potential schema changes, data type changes etc.
 
