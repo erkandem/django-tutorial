@@ -5,7 +5,7 @@ from django.test import TestCase
 from .models import Question
 
 
-def create_question(question_text, days):
+def create_question(question_text: str, days: int) -> Question:
     """
     Create a question with the given `question_text` and published the
     given number of `days` offset to now (negative for questions published
