@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.urls import reverse
 from django.test import TestCase
 from .models import Question
+from .models import Choice
 
 
 def create_question(question_text: str, days: int) -> Question:
@@ -13,6 +14,22 @@ def create_question(question_text: str, days: int) -> Question:
     """
     time = timezone.now() + datetime.timedelta(days=days)
     return Question.objects.create(question_text=question_text, pub_date=time)
+
+
+def create_choices(choice_text: str) -> Choice:
+    """
+    testing utility
+    will create a dummy `Question` and `Choice` object
+
+    Args:
+        choice_text(str): argument passed ob to the `Choice` element
+
+    Returns:
+        (Choice): an created Object to further analyze
+    """
+    q = create_question('Do you like candy?', 0)
+    c = Choice.objects.create(question=q, choice_text=choice_text, votes=15)
+    return c
 
 
 class QuestionModelTests(TestCase):
