@@ -138,3 +138,11 @@ class QuestionDetailViewTests(TestCase):
         url = reverse('my_app:detail', args=(past_question.id,))
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
+
+
+class ChoiceModelTests(TestCase):
+    def test_str_representation(self):
+        expected = 'Yes!'
+        c = create_choices(choice_text=expected)
+        result = c.__str__()
+        self.assertEqual(result, expected)
